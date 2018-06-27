@@ -5,12 +5,13 @@ const User = require('../models/user')
 
 const jwtSecret = 'doggo123' // Should come from ENV
 const jwtAlgorithm = 'HS256'
-const jwtExpiresIn = '6h'
+const jwtExpiresIn = '3h'
 
 // use static authenticate method of model in LocalStrategy
 passport.use(User.createStrategy())
 
 // Tell Passport to process JWT
+// This will happen for every incoming request
 passport.use(new PassportJwt.Strategy({
   jwtFromRequest: PassportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: jwtSecret,
@@ -18,6 +19,7 @@ passport.use(new PassportJwt.Strategy({
 }, (payload, done) => {
   User.findById(payload.sub).then((user) => {
     if (user) {
+      user.token = payload
       done(null, user)
     } else {
       done(null, false)

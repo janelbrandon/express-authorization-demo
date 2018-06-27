@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/protected', requireJwt, (req, res) => {
-  res.send('You have a valid token!')
+  res.send('You have a valid token: ' + JSON.stringify(req.user.token))
 })
 
 router.post('/register', register, signJwtForUser)
