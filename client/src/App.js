@@ -8,6 +8,16 @@ class App extends Component {
   state = {
     bookmarks: []
   }
+
+  remove = (id) => { // id = Mongo _id of the bookmark
+      const index = this.state.bookmarks.findIndex(bookmark => bookmark._id === id)
+      if (index >= 0) {
+        const bookmarks = [...this.state.bookmarks]
+        bookmarks.splice(index, 1)
+        this.setState({ bookmarks })
+      }
+  }
+
   render() {
     const { bookmarks } = this.state
     return (
@@ -16,7 +26,7 @@ class App extends Component {
         <ul>
         {
           bookmarks.map(
-            bookmark => <Bookmark key={bookmark._id} title={bookmark.title} url={bookmark.url} />
+            bookmark => <Bookmark key={bookmark._id} {...bookmark} remove={this.remove} />
           )
         }
         </ul>
