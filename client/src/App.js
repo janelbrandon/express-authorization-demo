@@ -2,11 +2,30 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios'
+import { api, setJwt } from './api/init'
 import Bookmark from './components/Bookmark'
+import SignIn from './components/SignIn'
 
 class App extends Component {
   state = {
-    bookmarks: []
+    bookmarks: [],
+    token: null,
+    loginError: null
+  }
+
+  handleSignIn = async (event) => {
+    try {
+      event.preventDefault()
+      const form = event.target
+      const response = await api.post('/auth/login', {
+        email: form.elements.email.value,
+        password: form.elements.password.value
+      })
+      this.setState({ token: response.data.token })
+      setJwt(response.data.token)
+    } catch (error) {
+      this.setState({ loginError: error.message })
+    }
   }
 
   remove = (id) => { // id = Mongo _id of the bookmark
@@ -22,6 +41,13 @@ class App extends Component {
     const { bookmarks } = this.state
     return (
       <div className="App">
+        {
+          this.state.token ? (
+            <p>You are logged in with token: { this.state.token }</p>
+          ) : (
+            <SignIn loginError={this.state.loginError} handleSignIn={this.handleSignIn} />
+          )
+        }
         <h1>Bookmarks</h1>
         <ul>
         {
