@@ -14,7 +14,7 @@ class App extends Component {
     loginError: null
   }
 
-  get token() {
+  get token() { 
     return localStorage.getItem('token')
   }
 
@@ -70,7 +70,7 @@ class App extends Component {
               } else {
                 return (<SignIn loginError={this.state.loginError} handleSignIn={this.handleSignIn} />)
               }
-            } 
+            }
             } />
             <Route exact path="/bookmarks" render={(props) => (
               this.token ? (
