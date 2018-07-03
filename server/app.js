@@ -26,4 +26,4 @@ mongoose.connect('mongodb://dbadmin:hello123@ds125821.mlab.com:25821/bookmarks-c
 app.use('/auth', require('./routes/auth'))
 app.use('/bookmarks', requireJwt, require('./routes/bookmarks'))
 
-app.listen(3000, () => console.log('Listening on http://localhost:3000'));
+app.listen(process.env.PORT || 3000, () => console.log('Listening on http://localhost:3000'));
