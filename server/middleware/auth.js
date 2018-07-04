@@ -5,12 +5,13 @@ const User = require('../models/user')
 
 const jwtSecret = 'doggo123' // Should come from ENV
 const jwtAlgorithm = 'HS256'
-const jwtExpiresIn = '6h'
+const jwtExpiresIn = '3h'
 
 // use static authenticate method of model in LocalStrategy
 passport.use(User.createStrategy())
 
 // Tell Passport to process JWT
+// This will happen for every incoming request
 passport.use(new PassportJwt.Strategy({
   jwtFromRequest: PassportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: jwtSecret,
@@ -18,6 +19,7 @@ passport.use(new PassportJwt.Strategy({
 }, (payload, done) => {
   User.findById(payload.sub).then((user) => {
     if (user) {
+      user.token = payload
       done(null, user)
     } else {
       done(null, false)
@@ -28,7 +30,7 @@ passport.use(new PassportJwt.Strategy({
 }))
 
 const register = (req, res, next) => {
-  User.register(new User({ email: req.body.email }), req.body.password, (err, user) => {
+  User.register(new User({ email: req.body.email, role: 'user' }), req.body.password, (err, user) => {
     if (err) {
       return res.status(500).send(err.message);
     }
@@ -36,6 +38,14 @@ const register = (req, res, next) => {
     req.user = user
     next()
   })
+}
+
+const isAdmin = (req, res, next) => {
+  if (req.user.role && req.user.role === 'admin') {
+    next()
+  } else {
+    res.sendStatus(403)
+  }
 }
 
 // Create a JWT (user just logged in or registered)
@@ -64,5 +74,6 @@ module.exports = {
   requireJwt: passport.authenticate('jwt', { session: false }),
   login: passport.authenticate('local', { session: false }),
   register,
-  signJwtForUser
+  signJwtForUser,
+  isAdmin
 }
