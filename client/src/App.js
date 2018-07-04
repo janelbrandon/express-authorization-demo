@@ -14,7 +14,7 @@ class App extends Component {
     loginError: null
   }
 
-  get token() { 
+  get token() {
     return localStorage.getItem('token')
   }
 
@@ -128,7 +128,7 @@ class App extends Component {
   async fetchBookmarks() {
     try {
       const bookmarks = await api.get(
-        'http://localhost:3000/bookmarks'
+        '/bookmarks'
       )
       this.setState({ bookmarks: bookmarks.data })
     }
