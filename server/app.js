@@ -15,7 +15,7 @@ app.use(initializePassport)
 app.use(cors())
 
 // mongoose
-mongoose.connect('mongodb://dbadmin:hello123@ds125821.mlab.com:25821/bookmarks-coderacademy', (err) => {
+mongoose.connect('mongodb://dbadmin:dbadmin1@ds125851.mlab.com:25851/bookmarks-coderacademy', (err) => {
   if (err) {
     console.log('Error connecting to database', err);
   } else {

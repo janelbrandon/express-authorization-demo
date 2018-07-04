@@ -64,14 +64,16 @@ class App extends Component {
       {
         <Router>
           <Fragment>
+            <Route exact path="/" render = {(props) => (
+                <Redirect to ="/login" />
+            )} />
             <Route exact path="/login" render={(props) => {
               if (this.token) {
                 return (<Redirect to="/bookmarks"/>)
               } else {
                 return (<SignIn loginError={this.state.loginError} handleSignIn={this.handleSignIn} />)
               }
-            }
-            } />
+            }} />
             <Route exact path="/bookmarks" render={(props) => (
               this.token ? (
                 <Fragment>
@@ -114,7 +116,7 @@ class App extends Component {
     catch(error) {
       alert('Can\'t get bookmarks!')
     }
-  } 
+  }
 }
 
 
