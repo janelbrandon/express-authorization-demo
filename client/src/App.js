@@ -94,25 +94,6 @@ class App extends Component {
             )}/>
             </Fragment>
         </Router>
-
-          // this.token ? (
-          //   <Fragment>
-          //     <h4>Welcome { tokenDetails.email }!</h4>
-          //     <p>You logged in at: { new Date(tokenDetails.iat * 1000).toLocaleString() }</p>
-          //     <p>Your token expires at: { new Date(tokenDetails.exp * 1000).toLocaleString() }</p>
-          //     <button onClick={this.handleSignOut}>Logout</button>
-          //     <h1>Bookmarks</h1>
-          //     <ul>
-          //     {
-          //       bookmarks.map(
-          //         bookmark => <Bookmark key={bookmark._id} {...bookmark} remove={this.remove} />
-          //       )
-          //     }
-          //     </ul>
-          //   </Fragment>
-          // ) : (
-          //   <SignIn loginError={this.state.loginError} handleSignIn={this.handleSignIn} />
-          // )
         }
       </div>
     );
@@ -127,15 +108,13 @@ class App extends Component {
 
   async fetchBookmarks() {
     try {
-      const bookmarks = await api.get(
-        '/bookmarks'
-      )
+      const bookmarks = await api.get('/bookmarks')
       this.setState({ bookmarks: bookmarks.data })
     }
     catch(error) {
       alert('Can\'t get bookmarks!')
     }
-  }
+  } 
 }
 
 

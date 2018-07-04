@@ -11,4 +11,4 @@ const setJwt = (token) => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
-export { api, setJwt }
+export { api, setJwt } 
